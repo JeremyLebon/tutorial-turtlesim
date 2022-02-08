@@ -1,0 +1,24 @@
+{
+  "name": "tutorial-turtlesim",
+  "version": "0.0.0",
+  "description": "Awesome description",
+  "scripts": {
+    "docs:dev": "vuepress dev docs",
+    "docs:build": "vuepress build docs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "Creative Commons Attribution-ShareAlike 4.0 International License",
+  "devDependencies": {
+    "vuepress": "^1.2.0",
+    "vuepress-plugin-zooming": "^1.1.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JeremyLebon/tutorial-turtlesim"
+  },
+  "bugs": {
+    "url": "https://github.com/JeremyLebon/tutorial-turtlesim/issues"
+  },
+  "homepage": "https://github.com/JeremyLebon/tutorial-turtlesim#readme"
+}
