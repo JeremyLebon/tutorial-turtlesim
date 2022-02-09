@@ -7,9 +7,7 @@ module.exports = {
       { text: 'Company', link: 'https://www.vives.be' },
       { text: 'License', link: '/LICENSE.md' },
     ],
-    sidebar: [
-      ['/', 'Home'],
-    ],
+    sidebar: [['/', 'Home'], ['/installation/', 'Installation']],
     repo: 'https://github.com/JeremyLebon/tutorial-turtlesim',
     docsDir: 'docs',
     docsBranch: 'master'
@@ -35,5 +33,6 @@ module.exports = {
         zIndex: 10000,
       },
     }],
+      ['vuepress-plugin-code-copy', true]
   ],
 }

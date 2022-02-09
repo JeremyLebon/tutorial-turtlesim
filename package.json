@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/JeremyLebon/tutorial-turtlesim/issues"
   },
-  "homepage": "https://github.com/JeremyLebon/tutorial-turtlesim#readme"
+  "homepage": "https://github.com/JeremyLebon/tutorial-turtlesim#readme",
+  "dependencies": {
+    "vuepress-plugin-code-copy": "^1.0.6"
+  }
 }
