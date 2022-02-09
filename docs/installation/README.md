@@ -297,4 +297,20 @@ To run the Docker container, execute the bash script by the use of the terminal.
 ./run_image_ros.bash
 ```
 
-You will see that you are logged in to the Docker container
+You will see that you are logged in successfully into the Docker container. 
+
+```shell
+root@b100bd1c4296:/# 
+```
+
+To efficiently use ROS most of the time to need multiple terminal screens. 
+To connect to the Docker container the following command is needed evertime you need a new terminal.
+With this command you execute (`exec`) a interactive (`-it`) connection with 
+Docker container (`turtlesim_cont`) by using the terminal (`bash`)
+
+```shell
+docker exec -it turtlesim_cont bash
+```
+
+
+You can now start to explore the wonderful world of ROS. :)

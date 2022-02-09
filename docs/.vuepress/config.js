@@ -7,7 +7,11 @@ module.exports = {
       { text: 'Company', link: 'https://www.vives.be' },
       { text: 'License', link: '/LICENSE.md' },
     ],
-    sidebar: [['/', 'Home'], ['/installation/', 'Installation']],
+    sidebar: [
+      ['/', 'Home'],
+      ['/installation/', 'Installation'],
+      ['/tutorial/', 'Tutorial']
+    ],
     repo: 'https://github.com/JeremyLebon/tutorial-turtlesim',
     docsDir: 'docs',
     docsBranch: 'master'
