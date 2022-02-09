@@ -2,6 +2,7 @@ module.exports = {
   title: 'tutorial-turtlesim',
   description: 'Awesome description',
   themeConfig: {
+    sidebarDepth:5,
     nav: [
       { text: 'Home', link: '/' },
       { text: 'Company', link: 'https://www.vives.be' },
@@ -37,6 +38,6 @@ module.exports = {
         zIndex: 10000,
       },
     }],
-      ['vuepress-plugin-code-copy', true]
+      ['vuepress-plugin-code-copy', true],['vuepress-plugin-mermaidjs']
   ],
 }

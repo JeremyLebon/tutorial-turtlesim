@@ -6,16 +6,31 @@ title: Tutorial
 
 ## ROS Components
 
+In section the different kinds of ros components are handled. 
+Each time illustrated with an example on the turtlesim:
+
+The following compenents will be handled:
+* roscore
+* rosnode
+* rostopic
+* rostopic
+* 
+
+
 ### roscore 
 
-This starts ROS and creates the Master so that nodes can communicate. 
+The `roscore` command starts ROS and creates the Master so that ROS nodes can communicate. 
+::: warning
+Make sure that you work in the container environment!
+:::
 
-```bash
-roscore	(Minimize Window) 
+```shell
+roscore	
 ```
-![](img/img_roscore.png)
 
-From the ROS tutorial http://wiki.ros.org/roscore 
+![](./assets/img_roscore.png)
+
+From the ROS tutorial 
 
 `roscore`is a collection of nodes and programs that are pre-requisites of a ROS-based system. 
 You must have a roscore running in order for ROS nodes to communicate. It is launched using the roscore command. 
@@ -28,122 +43,291 @@ roscore will start up:
 * ROS Parameter Server 
 * rosout logging node 
 
+source: [wiki ros](http://wiki.ros.org/roscore) 
+::: warning
 Leave this window active but minimized so that the ROS Master is still available. 
-
+:::
  
-## ROS NODES, TOPICS, AND SERVICES USING TURTLESIM 
+### rosnode 
 
-If you are new to ROS - don’t be impatient. There is a great deal to learn but the Turtlesim example shown here should make things easier. 
+```mermaid
+flowchart TD
+    roscore <--> rosnode_1
+    roscore <--> rosnode_2
+    roscore <--> rosnode_...
+    roscore <--> rosnode_4;
+```
 
-The ROS official tutorials are at these WEB sites: http://wiki.ros.org/turtlesim/Tutorials 
 
-ROS Tutorials Helpful for the Examples to Follow: 
+A ROS node is an executable program (executable file) contained in a ROS package. 
+The ROS nodes use the ROS client library which allows to communicate with other nodes. 
+Nodes can publish or subscribe to one or more topics. 
+Nodes can also offer or use a service. There are 2 types of client libraries:
+* rospy: python client library
+* roscpp: c++ client library gfhfh
 
-* ROS/Tutorials/UnderstandingNodes
-* ROS/Tutorials/UnderstandingTopics
-* ROS/Tutorials/UnderstandingServicesParams 
 
-Other useful references are Listed in Appendix I 
 
-### TURTLESIM NODE 
+#### Example: Turtlesim node 
 
-We will start the turtlesim node and explore its properties. Execute roscore and in a new terminal create the turtlesim node from the package turtlesim: 
+We will start the turtlesim node and explore its properties. 
+Execute a turtlesim node in a new terminal  from the package turtlesim.
+
+
+::: warning
+
+`roscore` should already be running otherwise you will receive an error
+
 ```bash
 roscore
 ```
+:::
+
+Connect with the Docker container with a new terminal.
+
+```shell
+docker exec -it turtlesim_cont bash
+```
+
+Start the turtlesim node with `rosrun`
+
 ```bash
 rosrun turtlesim turtlesim_node 
 ```
 
 ![](./assets/img_turtlesim_node.png)
 
-![](img/img_screen_turtlesim.png)
 
-The rosrun command takes the arguments `[package name]` `[node name]`. The node creates the screen image and the turtle. 
+The rosrun command takes the arguments `[package name]` `[node name]`. 
+The node creates the screen image and the turtle.
+<p align="center">
+<img src="./assets/img_screen_turtlesim.png" alt="drawing" width="400" height="250" />
+</p>
+
 Here the turtle is in the center in x=5.5, y=5.5 with no rotation. 
 
-Before moving the turtle, let's study the properties of the nodes, topics, service and messages available with turtlesim package in another window. 
 
-###Get node list  
+Before moving the turtle, let's study the properties of the node available with turtlesim package in another window. 
 
-Turtlesim rosnode list 
+#### Get node list  
+
+With argument `list` we can look up the existing/active ROS nodes.
+Execute this command again in a new terminal connected to the container.
+
+```shell
+docker exec -it turtlesim_cont bash
+```
+Add the command below in the new terminal
 
 ```bash
 rosnode list
 ```
+
+Output: 
+
 ```bash
 /rosout 
 /turtlesim 
 ```
-Note the difference in notation between the node `/turtlesim` and the package turtlesim. 
 
-###Get info of node 
+We can see that there are 2 ros nodes active.
+
+<p align="center">
+
+```mermaid
+flowchart TD
+    roscore <--> /rosout
+    roscore <--> /turtlesim
+```
+
+</p>
+
+::: tip Important
+Note the difference in notation between the node `/turtlesim` and the package `turtlesim`. 
+:::
+
+
+#### Get info of node 
+
+To get the info of the turtlesim node add the command in the container terminal. 
+Reuse the terminal of the previous step.
+
 
 ```bash
 rosnode info /turtlesim 
 ```
-![](img/img_rosnode_turtlesim_info.png)
+Output:
 
-(We can use ROS services to manipulate the turtle and perform other operations.) 
+```shell
+--------------------------------------------------------------------------------
+Node [/turtlesim]
+Publications: 
+ * /rosout [rosgraph_msgs/Log]
+ * /turtle1/color_sensor [turtlesim/Color]
+ * /turtle1/pose [turtlesim/Pose]
 
-### Get ROS services 
+Subscriptions: 
+ * /turtle1/cmd_vel [unknown type]
 
-Services: (The format is `$rosservice call <service> <arguments>` ) 
+Services: 
+ * /clear
+ * /kill
+ * /reset
+ * /spawn
+ * /turtle1/set_pen
+ * /turtle1/teleport_absolute
+ * /turtle1/teleport_relative
+ * /turtlesim/get_loggers
+ * /turtlesim/set_logger_level
 
- ```bash
+
+contacting node http://127.0.0.1:33755/ ...
+Pid: 252
+Connections:
+ * topic: /rosout
+    * to: /rosout
+    * direction: outbound (47461 - 127.0.0.1:38932) [16]
+    * transport: TCPROS
+```
+
+
+### rosservice 
+A ROS service is an example of synchronous communication. It is based on the Request and Response system. 
+Some ROS nodes provide a ROS service with a specific name. 
+Clients can request a request from the service and have to wait for a response. 
+The principle of communication can be compared to a telephone conversation between 2 ROS nodes. 
+However, this is intended for short-term communication between 2 nodes.
+
+
+```mermaid
+sequenceDiagram
+    rosnode1->>rosmaster: register
+    rosnode2->>rosmaster: register
+    rosnode1->>rosmaster: request server info
+    rosmaster-->>rosnode1: response with info
+    rosnode1->>rosnode2: request
+    rosnode2-->>rosnode1: response
+```
+
+
+
+#### Get ROS services 
+
+To get all the supported services of a rosnode. Use the command below.
+
+ ```shell
 rosnode info /turtlesim 
 ```
 
-![](img/img_rosnode_turtlesim_info.png)
+Output
 
-The node `/turtlesim` publishes three topics and subscribes to the `/turtle1/cmd_vel` topic. 
-The services for the node are listed also. 
- 
-### Move Turtlebot with ROS services 
+```shell
+...
+Services: 
+ * /clear
+ * /kill
+ * /reset
+ * /spawn
+ * /turtle1/set_pen
+ * /turtle1/teleport_absolute
+ * /turtle1/teleport_relative
+ * /turtlesim/get_loggers
+ * /turtlesim/set_logger_level
+...
+```
 
-Services:  (We can use ROS services to manipulate the turtle and perform other operations 
+The turtlesim node supports 9 services.
 
-the format is rosservice call `<service>` `<arguments>`) 
+With these service we can read out the node but also command the node depending on the feature.
 
-* /turtle1/teleport_absolute
-* /turtlesim/get_loggers
-* /turtlesim/set_logger_level
-* /reset
-* /spawn
-* /clear
-* /turtle1/set_pen
-* /turtle1/teleport_relative 
-* /kill 
+The format of a rosservice call `rosservice <service>` `<arguments>` is the following
 
-The turtle can be moved using the rosservice teleport option. The format of the position is `[x y theta]`. 
+The turtle can be moved using the `rosservice` teleport option. The format of the position is `[x y theta]`. 
 
-To get the info of a specific ros service use the command below
+To get the info of a specific rosservice use the command below
 
  ```bash
 rosservice info /spawn
  ```
-![](img/img_info_rosservice.png)
+Output:
 
-#### teleport_absolute 
+ ```bash
+Node: /turtlesim
+URI: rosrpc://127.0.0.1:47461
+Type: turtlesim/Spawn
+Args: x y theta name
+ ```
+
+#### Example rosservices turtlesim
+
+**teleport_absolute**
+
  ```bash
 rosservice call /turtle1/teleport_absolute 1 1 0 
  ```
- ![](img/img_teleport_absolute.png)
+
+ ![](./assets/img_teleport_absolute.png)
 
 
-#### teleport_relative 
-The relative teleport option moves the turtle with respect to its present position. The arguments are [linear, angle] 
+**teleport_relative** 
+
+The relative teleport option moves the turtle with respect to its present position. 
+The arguments are [linear, angle] 
 
  ```bash
 rosservice call /turtle1/teleport_relative  1 0 
  ```
-![](img/img_teleport_relative.png)
 
- 
-Try to move the turtle to location x=2, y=1. 
+![](./assets/img_teleport_relative.png)
 
+**Exercise 1**
 
-## TURTLESIM NODE TOPIC POSE 
+Try to move the turtle to location x=2, y=1.
+
+::: details Solution Exercise 1
+```bash
+rosservice call /turtle1/teleport_absolute 2 1 0 
+```
+:::
+
+**Exercise 2**
+
+Try to change the pen color of the turtle.
+
+::: details Solution Exercise 2
+
+Get the info of the service
+
+```shell
+rosservice info /turtle1/set_pen
+```
+
+**Output**
+
+```shell
+Node: /turtlesim
+URI: rosrpc://127.0.0.1:47461
+Type: turtlesim/SetPen
+Args: r g b width off
+```
+
+```shell
+rosservice call /turtle1/set_pen 100 150 100 3 0
+```
+:::
+
+### rostopic
+
+ROS nodes can communicate with each other via ROS topics. 
+ROS nodes can publish a ROS Topic but can also subscribe (subscribe) to an existing ROS topic. 
+In most cases there is one publisher and several subscribers. 
+The topics are streamed asynchronously. It can be compared to a chat room.
+
+The node `/turtlesim` publishes three topics and subscribes to the `/turtle1/cmd_vel` topic. 
+
+#### Examples rostopics
+
+**Turtlesim pose** 
 
 Another topic for turtlesim node is the turtles pose. This is the x, y position, angular direction, 
 and the linear and angular velocity of the turtle. 
@@ -153,54 +337,105 @@ The following command gives insight in following items:
 * How is publishing the topic
 * How is subscribed to the topic 
 
- ```bash
+We start with the turtlesim pose topic
+
+ ```shell
 rostopic info /turtle1/pose 
  ```
-![](img/img_info_rostopic.png)
+
+Output
+
+ ```shell
+Type: turtlesim/Pose
+
+Publishers: 
+ * /turtlesim (http://127.0.0.1:33755/)
+
+Subscribers: None
+ ```
+A rostopic is always based on a **rosmsg** (ROS message) structure.
 
 To get the ROS message name used by the ROS topic use the command below.
- ```bash
+
+ ```shell
 rostopic type /turtle1/pose 
  ```
-![](img/img_rostopic_type.png)
+Output:
+
+ ```shell
+turtlesim/Pose
+ ```
 
 To get the specific structure of the ros message use the command below.
-```bash
+
+```shell
 rosmsg show turtlesim/Pose 
  ```
-![](img/img_rosmsg_show.png)
+
+Output:
+
+ ```shell
+turtlesim/Pose
+root@74b5eecc7ce2:/# rosmsg show turtlesim/Pose
+float32 x
+float32 y
+float32 theta
+float32 linear_velocity
+float32 angular_velocity
+ ```
 
 To read the actual values of the ROS topic use the `rostopic echo` command
-```bash
+
+```shell
 rostopic echo /turtle1/pose 
  ```
-![](img/img_rostopic_echo.png)
 
-Continuous output of the position, orientation, and velocities. 
-Compare to the position on the turtle window. `CTRL+C` to stop output.
+Output:
+
+ ```shell
+x: 6.0
+y: 1.0
+theta: 0.0
+linear_velocity: 0.0
+angular_velocity: 0.0
+---
+x: 6.0
+y: 1.0
+theta: 0.0
+linear_velocity: 0.0
+angular_velocity: 0.0
+---
+ ```
+
+We get a continuous output of the position, orientation, and velocities. 
+Compare to the position on the turtle window. 
+To stop the output press `CTRL+C`.
 
 http://wiki.ros.org/ROS/Tutorials/UnderstandingTopics 
 
 
-### MAKE TURTLE RUN IN A CIRCLE rostopic pub COMMAND 
+Move turtle with cmd_vel
+
 ```bash
 rosnode info /turtlesim 
 ```
-![](img/img_rosnode_turtlesim_info.png)
+
+![](./assets/img_rosnode_turtlesim_info.png)
 
 The turtlesim node is subscribed to the cmd_vel topic. To actual send this topic `rostopic pub` can be used
  
 ####Type of message for cmd_vel 
+
 ```bash
 rostopic type /turtle1/cmd_vel 
 ```
-![](img/img_rostopic_type_cmd_vel.png)
+![](./assets/img_rostopic_type_cmd_vel.png)
  
 ```bash
 rostopic type /turtle1/cmd_vel | rosmsg show 
 ```
 
-![](img/img_rosmsg_show_cmd_vel.png)
+![](./assets/img_rosmsg_show_cmd_vel.png)
 
 The requirement is for two vectors with 3 elements each. The message type is geometry_msgs/Twist . 
 
@@ -209,10 +444,11 @@ To get a list of messages for ROS of geometry_msgs
 [http://wiki.ros.org/geometry_msgs ](http://wiki.ros.org/geometry_msgs)
 
 This displays a verbose list of topics to publish to and subscribe to and their type: 
+
 ```bash
 rostopic list -v 
 ```
-![](img/img_rostopic_list_verbose.png)
+![](./assets/img_rostopic_list_verbose.png)
 
 
 ### MOVE TURTLE ONCE 
@@ -247,13 +483,13 @@ angular:
 Now back space to fill in the values x=0.0 (lineair) and z= 1.8 (angular) (Not yet executed) 
 If ENTER the rostopic will be publish **once** due to `-1`
 
-![](img/img_rostopic_pub_once_cmd_vel.png)
+![](./assets/img_rostopic_pub_once_cmd_vel.png)
 
 Where is the turtle?  (After the Initial Command) 
 ```bash
 rostopic echo /turtle1/pose 
 ```
-![](img/img_rostopic_echo_pose_aftercmd_vel.png)
+![](./assets/img_rostopic_echo_pose_aftercmd_vel.png)
 
 Use CTRL+c  to stop the output of position, orientation and velocity. 
 
@@ -279,7 +515,7 @@ to the message as shown by the command:
 ```bash
 rosnode info /turtlesim 
 ```
-![](img/img_rosnode_info_with_cmd_vel.png)
+![](./assets/img_rosnode_info_with_cmd_vel.png)
 
 Before we go further reset the location of the turtle
 ```bash
@@ -290,29 +526,29 @@ rosservice call /reset
 rostopic pub /turtle1/cmd_vel geometry_msgs/Twist -r 1 -- '[2.0, 0.0, 0.0]' '[0.0, 0.0, 1.8]' 
 ```
 The turtle is running in A Circle 
-![](img/img_screen_turtlesim_circle.png)
+![](./assets/img_screen_turtlesim_circle.png)
 
 
 To Show the rate in Hz of the published topic (CTRL-C to stop data): 
 ```bash
 rostopic hz /turtle1/pose 
 ```
-![](img/img_topic_hz_pose.png)
+![](./assets/img_topic_hz_pose.png)
 ```bash
 rostopic hz /turtle1/cmd_vel
 ```
-![](img/img_topic_hz_cmd_vel.png)
+![](./assets/img_topic_hz_cmd_vel.png)
 
 
-### USING RQT_PLOT, WITH TURTLESIM 
+## ROS tools
 
-#### rqt_plot 
+### rqt_plot 
 
 We can plot information about the nodes and topics. 
 ```bash
 rqt_plot /turtle1/pose/x:y:z 
 ```
-![](img/rqt_plot_pose.png)
+![](./assets/rqt_plot_pose.png)
 
 Turtle is turning in a circle about 5.5 Ymin	x goes from about 4.5 to 6.5. 
 Selection of  Axis for rqt_plot  (Click on the check mark) 
@@ -331,7 +567,7 @@ Add the argument -e to empty the topics from the plot
 ```bash
 rqt_plot  -e /turtle1/pose/x:y:z ....
 ```
-![](img/rqt_plot_pose_cmd_vel.png)
+![](./assets/rqt_plot_pose_cmd_vel.png)
 
 Tips
 Try to look up the correct parameters with the following commands
@@ -341,7 +577,7 @@ rostopic type /turtle1/cmd_vel | rosmsg show
 ```
 
 **Spoiler - Solution**
-![](img/img_rqt_plot_pose_cmd_vel.png)
+![](./assets/img_rqt_plot_pose_cmd_vel.png)
 ```bash
 rqt_plot -e /turtle1/cmd_vel/linear/x /turtle1/cmd_vel/angular/z /turtle1/pose/x:y:z
 ```
@@ -363,13 +599,13 @@ Roscore is running in one window and turtlesim_node in another.
 rosrun turtlesim turtle_teleop_key 
 ```
 
-![](img/img_turtle_teleop_key.png)
+![](./assets/img_turtle_teleop_key.png)
 
 
 ```bash
 rosnode info /teleop_turtle 
 ```
-![](img/img_rosnode_teleopturtle_info.png)
+![](./assets/img_rosnode_teleopturtle_info.png)
 
 To move turtle with arrow keys, be sure the 
 focus is on the window that started turtle_teleop_key. 
@@ -385,10 +621,10 @@ The parameter `/reset` can be found with the command `rosnode info /turtlesim`
 To move turtle with arrow keys, be sure the 
 focus is on the window that started turtle_teleop_key. 
 
-![](img/img_move_turtle_teleop_turtle.png) 
+![](./assets/img_move_turtle_teleop_turtle.png) 
 
 
-###Excercise
+## Exercises
 
 Try to add a new turtle. You don't have to stop the rosnode turtlesim
 An additional turtle can be spawn with a service parameter `/spawn`
@@ -397,59 +633,51 @@ The info of the ros parameter can be looked up with:
 ```bash
 rosservice call /spawn info
 ```
-![](img/img_rosservice_info_spawn.png)
+
+![](./assets/img_rosservice_info_spawn.png)
 
 With example command a second turtle will be spawn.
 ```bash
 rosservice call /spawn 3 3 0 turtle2
 ```
-![](img/img_spawn_second_turtle.png)
+![](./assets/img_spawn_second_turtle.png)
 To delete a turtle the command below can be used
 ```bash
 rosservice call /kill "name: 'turtle2'"
 ```
+
+::: warning
 It isn't possible to move the second turtle with the turtle_teleop_key.
+:::
 
-**Questions:**
-1. Try to move the second turtle to position `-2 -2  1` (x y theta)
-2. Try to read out the current position of the second turtle
-3. Try to control the turtle by command (cmd_vel) to used updaterate should be 10ms
-4. Try to visualise the current position in `rqt_plot`
-5. Try to find the updaterate of cmd_vel of the second turtle
-6. Try to change the  color of the pen set by the turtle on the screen. (tip check the `rosservice list`)
+### Exercise 1 
+Try to move the second turtle to position `-2 -2  1` (x y theta)
 
-
-
-**Spoiler solutions:**
-
-<details>
-<summary>Question 1</summary>
-<p>
-
-```bash
+::: details Solution Exercise 1
+```shell
 rosservice call /turtle1/teleport_absolute 2 2 0 
 ```
+:::
 
-</p>
-</details>  
+### Exercise 2 
+Try to read out the current position of the second turtle
 
-<details>
-<summary>Question 2</summary>
-<p>
+::: details Solution Exercise 2
 
-```bash
+```shell
 rostopic echo /turtle2/pose 
 ```
-![](img/img_Solution_Q2.png)
-</p>
-</details>  
 
-<details>
+![](./assets/img_Solution_Q2.png)
 
-<summary>Question 3</summary>
-<p>
+:::
 
-```bash
+### Exercise 3 
+Try to control the turtle by command (cmd_vel) to used updaterate should be 10ms
+
+::: details Solution Exercise 3
+
+```shell
 rostopic pub /turtle2/cmd_vel geometry_msgs/Twist -r 1 -- '[1.0, 0.0, 0.0]' '[0.0, 0.0, 1.8]' 
 
 rostopic pub /turtle2/cmd_vel geometry_msgs/Twist "linear:
@@ -462,69 +690,64 @@ angular:
   z: 0.0" -r 10
 ```
 
-</p>
-</details>  
+::: 
 
-<details>
-<summary>Question 4</summary>
-<p>
+### Exercise 4
+Try to visualise the current position in `rqt_plot`
 
-```bash
+::: details Solution Exercise 4
+```shell
 rqt_plot  -e /turtle2/pose/x:y:z
 ```
+:::
 
-</p>
-</details>  
+### Exercise 5
+Try to find the update rate of cmd_vel of the second turtle
 
-<details>
-
-<summary>Question 5</summary>
-<p>
-
-```bash
+::: details Solution Exercise 5
+```shell
 rostopic hz /turtle2/cmd_vel 
 ```
+:::
+### Exercise 6
+Try to change the  color of the pen set by the turtle on the screen. (tip check the `rosservice list`)
 
-</p>
-</details>  
-
-<details>
-<summary>Question 6.</summary>
-<p>
-
-```bash
+::: details Solution Exercise 6
+```shell
 rosservice list
 rosservice info /turtle2/set_pen 
 rosservice call /turtle2/set_pen 125 125 125 2  0
 ```
-
-</p>
-</details>  
-
+:::
 Clear the screen 
 
 When you want to CLEAR THE SCREEN 
+
 ```bash
 rosservice call /clear 
 ```
 
-#PYTHON and TURTLESIM 
+## Turtlesim and Python  
 
 LETS CONTROL THE TURTLE- Publish to /turtle1/cmd_vel: (  roscore and turtlesim_node running) 
 
  
 
 Create a Python script `turtlemove.py `and make executable (`chmod +x turtlemove.py`). 
-```bash
+
+```shell
 touch turtlemove.py
 ```
+
 Be sure to be in the correct directory where the program is located.
 Make Executable 
+
 ```bash
 chmod +x turtlemove.py
 ```
 
 Add the code below to the python script. Open it with `gedit`
+
 ```bash
 gedit turtlemove.py 
 ```
@@ -593,3 +816,7 @@ python turtlemove.py
  :TODO Informatie verder toevoegen p23
  
 TF with turtlesim
+
+
+
+http://wiki.ros.org/turtlesim/Tutorials  
