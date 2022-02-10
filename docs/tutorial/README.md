@@ -4,6 +4,7 @@ title: Tutorial
 
 # Tutorial
 
+
 ## ROS Components
 
 In section the different kinds of ros components are handled. 
@@ -538,7 +539,6 @@ rostopic hz /turtle1/pose
 rostopic hz /turtle1/cmd_vel
 ```
 ![](./assets/img_topic_hz_cmd_vel.png)
-
 
 ## ROS tools
 

@@ -1,8 +1,18 @@
 ---
 title: Home
 ---
+# ROS Tutorial Turtlesim
 
-# Tutorial Turtlesim
 <p align="center">
-<img src="./assets/Turtlesim_Gui.png" alt="drawing" width="400" height="250" />
+<img src="./assets/turtlesim_circle.gif" alt="drawing" width="400" height="250" />
 </p>
+
+## Objectives
+
+
+
+
+
+## Requirements
+* PC with Windows OS (admin rights needed)
+* Or PC with Ubuntu OS (sudo rights needed)

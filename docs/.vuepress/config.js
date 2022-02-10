@@ -1,17 +1,21 @@
 module.exports = {
-  title: 'tutorial-turtlesim',
+  title: 'ROS Tutorial - Turtlesim',
   description: 'Awesome description',
   themeConfig: {
     sidebarDepth:5,
+
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Company', link: 'https://www.vives.be' },
-      { text: 'License', link: '/LICENSE.md' },
+      { text: 'rosdriven', link: 'https://www.rosdriven.dev' },
     ],
     sidebar: [
       ['/', 'Home'],
       ['/installation/', 'Installation'],
-      ['/tutorial/', 'Tutorial']
+      ['/ros-components/', 'ROS components'],
+      ['/controlling-the-turtlesim/', 'Controlling the Turtlesim'],
+      ['/ros-tools/', 'ROS tools'],
+      ['/exercises/', 'Exercises'],
+      ['/turtlesim-python/', 'Turtlesim & python']
     ],
     repo: 'https://github.com/JeremyLebon/tutorial-turtlesim',
     docsDir: 'docs',
