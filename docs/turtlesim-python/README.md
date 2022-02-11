@@ -22,6 +22,11 @@ mkdir scripts
 cd scripts
 ```
 
+::: warning IMPORTANT
+Make sure that `roscore` and `turtlesim_node` are still running.
+Stop all other terminal execution by `CTRL+C`
+:::
+
 The following things will be handled in this section
 
 1. Subscribe to a rostopic
@@ -31,16 +36,15 @@ The following things will be handled in this section
 
 ## Subscribe to a rostopic
 
+The objective of this script is to read the position (`Pose`) of the turtle.
+We will have to subscribe to the `/turtle1/Pose` topic
+
 ::: warning 
 Work in the following directory!
 
 ```shell
 cd ~/home/catkin_ws/src/turtlebot3_simulations/turtlebot3_simulations/scripts
 ```
-
-The objective of this script is to read the position (Pose) of the turtle.
-We will have to subscribe to the `/turtle1/Pose` topic
-
 :::
 
 Create a Python script `turtlesubscribe.py `and make executable (`chmod +x turtlesubscribe.py`). 
@@ -57,10 +61,11 @@ chmod +x turtlesubscribe.py
 ```
 
 ::: warning
-If chmod +x is not execute onto the python script it won't run!
+If `chmod +x` is not execute onto the python script it won't run!
 :::
 
-If you execute the command `ls` in the terminal you will see that the name `turtlesubscribe.py`should be green. 
+If you execute the command `ls` in the terminal you will see 
+that the name `turtlesubscribe.py`should be green. 
 That indicates that it is executable.
 
 ```shell
@@ -119,12 +124,10 @@ if __name__== "__main__":
 
 ```
 
+## Move the turtle linear
 
-
-
-
-
-## Move turtle linear
+The objective is here to move the turtle with the use of the rostopic `cmd_vel`. 
+We will have to **publish** the rostopic.
 
 
 ::: warning 
@@ -133,7 +136,6 @@ Work in the following directory!
 ```shell
 ~/home/catkin_ws/src/turtlebot3_simulations/turtlebot3_simulations/scripts
 ```
-
 :::
 
 Create a Python script `turtlemove.py `and make executable (`chmod +x turtlemove.py`). 
@@ -150,10 +152,12 @@ chmod +x turtlemove.py
 ```
 
 ::: warning
-If chmod +x is not execute onto the python script it won't run!
+If `chmod +x` is not execute onto the python script it won't run!
 :::
 
-If you execute the command `ls` in the terminal you will see that the name `turtlemove.py`should be green. That indicates that it is executable.
+If you execute the command `ls` in the terminal 
+you will see that the name `turtlemove.py`should be green. 
+That indicates that it is executable.
 
 ```shell
 ls
@@ -235,9 +239,16 @@ You will see that the turtle moves in forward direction.
 
 To stop the script press `CTRL + C` in the terminal
 
+::: tip
+The position of the turtle can be reseted by the following command:
+
+```shell
+rosservice call /reset 
+```
+:::
 
 #### Exercise 1  
-Try to move the turtlebot backwards with script
+Try to move the turtlebot backwards with a script
 
 ::: tip 
 * forward movement: positive
@@ -253,15 +264,30 @@ move_cmd.linear.x = -0.3
 ```
 :::
 
+#### Exercise 2  
+Try to move the turtlebot forward in a circle with a script
+
+::: tip 
+* linear: forward/backward
+* angular: turning
+:::
+
+::: details Solution Exercise 2
+
+Change line 30 in the python script to the following
+
+```python
+move_cmd.linear.x = 1.0 
+move_cmd.angular.z = 0.8 
+```
+:::
 
 
 
+Interested in other examples python & turtlesim see the following link.
 
+* [Move in straight line](http://wiki.ros.org/turtlesim/Tutorials/Moving%20in%20a%20Straight%20Line)
+* [Rotating Left & Right](http://wiki.ros.org/turtlesim/Tutorials/Rotating%20Left%20and%20Right)
+* [Moving to goal](http://wiki.ros.org/turtlesim/Tutorials/Go%20to%20Goal)
 
- :TODO Informatie verder toevoegen p23
  
-TF with turtlesim
-
-
-
-http://wiki.ros.org/turtlesim/Tutorials  

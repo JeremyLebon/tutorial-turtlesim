@@ -3,7 +3,24 @@ title: ROS components
 ---
 # ROS components
 
-In section the different kinds of ros components are handled. 
+
+## What is ROS?
+ROS is an open-source, meta-operating system for your robot. It provides the services you would expect from an operating system, 
+including hardware abstraction, low-level device control, implementation of commonly-used functionality, 
+message-passing between processes, and package management. It also provides tools and libraries for obtaining, 
+building, writing, and running code across multiple computers.  http://www.ros.org 
+
+ROS is similar in some respects to 'robot frameworks,' 
+such as Player, YARP, Orocos, CARMEN, Orca, MOOS, and Microsoft Robotics Studio.
+
+The ROS runtime "graph" is a peer-to-peer network of processes (potentially distributed across machines) that are loosely coupled using the ROS communication infrastructure. ROS implements several different styles of communication, including synchronous RPC-style communication over services, asynchronous streaming of data over topics, and storage of data on a Parameter Server. These are explained in greater detail in our Conceptual Overview.
+
+ROS is not a realtime framework, though it is possible to integrate ROS with realtime code. The Willow Garage PR2 robot uses a system called pr2_etherCAT, which transports ROS messages in and out of a realtime process. ROS also has seamless integration with the Orocos Real-time Toolkit.
+
+![](./assets/ROSbuildUp.png)
+
+
+In sections below  the different kinds of ros components are handled. 
 Each time illustrated with an example on the turtlesim:
 
 The following compenents will be handled:
@@ -14,12 +31,14 @@ graph TD
     rosnode
     rostopic
     rosservice
+    rosparam
 ```
 
 * roscore
 * rosnode
 * rostopic
-* rostopic
+* rosservice
+* rosparam
 
 
 
@@ -30,39 +49,75 @@ The `roscore` command starts ROS and creates the Master so that ROS nodes can co
 The ROS master coordinates the communication between the different ROS nodes (processes). 
 Each ROS node registers with the ROS master at start-up. The ROS master can/should be started via the command.
 
-::: warning
-There can only be **one** ROS master. When starting up a 2nd ROS master, the first ROS master is turned off.
-:::
-
-::: warning
-Make sure that you work in the container environment!
-:::
-
-```shell
-roscore	
-```
-
-![](./assets/img_roscore.png)
-
-From the ROS tutorial 
-
 `roscore`is a collection of nodes and programs that are pre-requisites of a ROS-based system. 
-You must have a roscore running in order for ROS nodes to communicate. It is launched using the roscore command. 
+You must have a roscore running in order for ROS nodes to communicate. It is launched using the roscore command.
 
-NOTE: If you use roslaunch, it will automatically start roscore if it detects that it is not already running. 
-
-roscore will start up: 
+`roscore` will start up: 
 
 * ROS Master 
 * ROS Parameter Server 
 * rosout logging node 
 
-source: [wiki ros](http://wiki.ros.org/roscore) 
+
+
+::: warning
+There can only be **one** ROS master. When starting up a 2nd ROS master, the first ROS master is turned off.
+:::
+
+
+
+Add the `roscore` in the container terminal
+
+```shell
+root@74b5eecc7ce2:/# roscore	
+```
+
+::: warning
+Make sure that you work in the container environment!
+:::
 
 ::: warning
 Leave this window active but minimized so that the ROS Master is still available. 
 :::
- 
+
+Output
+
+```shell
+Checking log directory for disk usage. This may take a while.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+
+started roslaunch server http://127.0.0.1:46711/
+ros_comm version 1.14.11
+
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: melodic
+ * /rosversion: 1.14.11
+
+NODES
+
+auto-starting new master
+process[master]: started with pid [117]
+ROS_MASTER_URI=http://127.0.0.1:11311/
+
+setting /run_id to eb2d08e8-89ab-11ec-a6d9-0242ac110002
+process[rosout-1]: started with pid [128]
+started core service [/rosout]
+
+```
+
+::: tip 
+If you use `roslaunch`, it will automatically start `roscore` if it detects that it is not already running.
+For this tutorial we won't be using `roslaunch`.
+:::
+
+source: [wiki ros](http://wiki.ros.org/roscore) 
+
+
 ## rosnode
 
 ```mermaid
@@ -78,13 +133,12 @@ The ROS nodes use the ROS client library which allows to communicate with other 
 Nodes can publish or subscribe to one or more topics. 
 Nodes can also offer or use a service. There are 2 types of client libraries:
 * rospy: python client library
-* roscpp: c++ client library gfhfh
-
-
+* roscpp: c++ client library 
+* Others (java, lsp,...)
 
 
 We will start the turtlesim node and explore its properties. 
-Execute a turtlesim node in a new terminal  from the package turtlesim.
+Execute a turtlesim node in a new container terminal from the package turtlesim.
 
 
 ::: warning
@@ -96,7 +150,7 @@ roscore
 ```
 :::
 
-Connect with the Docker container with a new terminal.
+Connect with the Docker container with a new **container** terminal.
 
 ```shell
 docker exec -it turtlesim_cont bash
@@ -104,12 +158,19 @@ docker exec -it turtlesim_cont bash
 
 Start the turtlesim node with `rosrun`
 
-```bash
+```shell
 rosrun turtlesim turtlesim_node 
 ```
 
-![](./assets/img_turtlesim_node.png)
+Output
 
+```shell
+QStandardPaths: XDG_RUNTIME_DIR not set, defaulting to '/tmp/runtime-root'
+[ INFO] [1644570735.732915989]: Starting turtlesim with node name /turtlesim
+[ INFO] [1644570735.735655326]: Spawning turtle [turtle1] at x=[5.544445], y=[5.544445], theta=[0.000000]
+libGL error: No matching fbConfigs or visuals found
+libGL error: failed to load driver: swrast
+```
 
 The rosrun command takes the arguments `[package name]` `[node name]`. 
 The node creates the screen image and the turtle.
@@ -121,7 +182,8 @@ The node creates the screen image and the turtle.
 Here the turtle is in the center in x=5.5, y=5.5 with no rotation. 
 
 
-Before moving the turtle, let's study the properties of the node available with turtlesim package in another window. 
+Before moving the turtle, let's study the properties of the node available with turtlesim 
+package in another container terminal. 
 
 #### Get node list  
 
@@ -133,13 +195,13 @@ docker exec -it turtlesim_cont bash
 ```
 Add the command below in the new terminal
 
-```bash
+```shell
 rosnode list
 ```
 
 Output: 
 
-```bash
+```shell
 /rosout 
 /turtlesim 
 ```
@@ -252,20 +314,20 @@ Services:
 
 The turtlesim node supports 9 services.
 
-With these service we can read out the node but also command the node depending on the feature.
+With these services we can read out the node but also command the node depending on the feature.
 
 The format of a rosservice call `rosservice <service>` `<arguments>` is the following
 
 The turtle can be moved using the `rosservice` teleport option. The format of the position is `[x y theta]`. 
 
-To get the info of a specific rosservice use the command below
+To get the info of a specific `rosservice` use the command below
 
- ```bash
+ ```shell
 rosservice info /spawn
  ```
 Output:
 
- ```bash
+ ```shell
 Node: /turtlesim
 URI: rosrpc://127.0.0.1:47461
 Type: turtlesim/Spawn
@@ -275,6 +337,9 @@ Args: x y theta name
 #### Example rosservices turtlesim
 
 **teleport_absolute**
+
+The absolute teleport option moves the turtle to the absolute position in de screen. 
+The arguments are `[x y theta] `
 
  ```bash
 rosservice call /turtle1/teleport_absolute 1 1 0 
@@ -286,7 +351,7 @@ rosservice call /turtle1/teleport_absolute 1 1 0
 **teleport_relative** 
 
 The relative teleport option moves the turtle with respect to its present position. 
-The arguments are [linear, angle] 
+The arguments are `[linear angle] `
 
  ```bash
 rosservice call /turtle1/teleport_relative  1 0 
@@ -307,6 +372,10 @@ rosservice call /turtle1/teleport_absolute 2 1 0
 **Exercise 2**
 
 Try to change the pen color of the turtle.
+
+::: tip
+Look for `set_pen`
+:::
 
 ::: details Solution Exercise 2
 
@@ -334,7 +403,7 @@ rosservice call /turtle1/set_pen 100 150 100 3 0
 
 ROS nodes can communicate with each other via ROS topics. 
 ROS nodes can publish a ROS Topic but can also subscribe (subscribe) to an existing ROS topic. 
-In most cases there is one publisher and several subscribers. 
+In most cases there is one **publisher** and several **subscribers**. 
 The topics are streamed asynchronously. It can be compared to a chat room.
 
 The node `/turtlesim` publishes three topics and subscribes to the `/turtle1/cmd_vel` topic. 
@@ -343,7 +412,7 @@ The node `/turtlesim` publishes three topics and subscribes to the `/turtle1/cmd
 
 **Turtlesim pose** 
 
-Another topic for turtlesim node is the turtles pose. This is the x, y position, angular direction, 
+A interesting topic of turtlesim node is the turtles pose (position). This is the x, y position, angular direction, 
 and the linear and angular velocity of the turtle. 
 
 The following command gives insight in following items:
@@ -435,7 +504,10 @@ This means that these parameters are globally visible. ROS parameters are intend
 * Update hardware drivers
 * Algorithms Adjustment
 
-**Not intended for high polling rates. Not intended for queries.**
+
+::: warning 
+`rosparam` is not intended for high polling rates. Also not intended for queries.
+:::
 
 To get an overview of the existing rosparam use the list argument.
 
@@ -455,11 +527,14 @@ Output
 /turtlesim/background_r
 
 ```
-
+#### Read a parameter value
 We want to get parameters and change color of background to Red 
+
 ```shell
 rosparam get /turtlesim/background_r
 ```
+
+The response will be the red value of the background.
 
 :::tip
 use Tab to get the available rosparams
@@ -471,9 +546,21 @@ To change a rosparam use the argument `set`
 rosparam set /turtlesim/background_r 0
 ```
 
+#### Set a parameter value
 This changes the parameter value, 
 now we have to call the clear service for the parameter change to take effect:
 
 ```shell
 rosservice call /clear
 ```
+
+## Other components
+
+This tutorial doens't handled all the ros components, sorry. Feel free to surf the [ROS wiki](http://wiki.ros.org/Documentation) pages:
+
+* [roslaunch](http://wiki.ros.org/roslaunch)
+* [roscd](http://wiki.ros.org/rosbash#roscd)
+* [ros action](http://wiki.ros.org/actionlib)
+* [rosbag](http://wiki.ros.org/rosbag)
+* ...
+

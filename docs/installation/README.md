@@ -314,3 +314,9 @@ docker exec -it turtlesim_cont bash
 
 
 You can now start to explore the wonderful world of ROS. :)
+
+If you want to exit the container. Just type `exit` in the terminal
+
+```shell
+exit
+```

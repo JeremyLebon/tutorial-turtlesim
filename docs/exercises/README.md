@@ -4,6 +4,47 @@ title: Exercises
 
 # Exercises
 
+Below you can find some recap exercises.
+
+But first try to add a new turtle. You don't have to stop the rosnode turtlesim
+An additional turtle can be spawn with a service parameter `/spawn`
+
+The info of the ros parameter can be looked up with:
+
+```shell
+rosservice call /spawn info
+```
+
+Output
+
+```shell
+Node: /turtlesim
+URI: rosrpc://127.0.0.1:49803
+Type: turtlesim/Spawn
+Args: x y theta name
+```
+
+With example command a second turtle will be spawn.
+
+```shell
+rosservice call /spawn 3 3 0 turtle2
+```
+
+
+![](./assets/img_spawn_second_turtle.png)
+
+
+To delete a turtle the command below can be used
+
+```shell
+rosservice call /kill "name: 'turtle2'"
+```
+
+::: warning
+It isn't possible to move the second turtle with the turtle_teleop_key.
+:::
+
+
 ## Exercise 1 
 Try to move the second turtle to position `-2 -2  1` (x y theta) by terminal
 
@@ -64,7 +105,11 @@ rostopic hz /turtle2/cmd_vel
 ```
 :::
 ## Exercise 6
-Try to change the  color of the pen set by the turtle on the screen. (tip check the `rosservice list`) by terminal
+Try to change the  color of the pen set by the turtle on the screen.
+
+::: tip
+check the `rosservice list`
+:::
 
 ::: details Solution Exercise 6
 ```shell
@@ -73,10 +118,3 @@ rosservice info /turtle2/set_pen
 rosservice call /turtle2/set_pen 125 125 125 2  0
 ```
 :::
-Clear the screen 
-
-When you want to CLEAR THE SCREEN 
-
-```bash
-rosservice call /clear 
-```
