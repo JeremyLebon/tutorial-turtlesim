@@ -130,7 +130,7 @@ We will have to **publish** the rostopic.
 
 
 ::: warning 
-Work in the following directory!
+Work in the following directory!   
 
 ```shell
 ~/home/catkin_ws/src/turtlebot3_simulations/turtlebot3_simulations/scripts
