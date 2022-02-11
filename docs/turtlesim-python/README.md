@@ -29,10 +29,8 @@ Stop all other terminal execution by `CTRL+C`
 
 The following things will be handled in this section
 
-1. Subscribe to a rostopic
-2. Publish a rostopic
-3. Move the turtle linear
-4. 
+1. Subscribe to a rostopic 
+2. Move the turtle linear
 
 ## Subscribe to a rostopic
 
@@ -123,6 +121,7 @@ if __name__== "__main__":
     	rospy.loginfo("End of the trip for Turtlesim") 
 
 ```
+
 
 ## Move the turtle linear
 

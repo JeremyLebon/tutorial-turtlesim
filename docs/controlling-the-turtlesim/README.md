@@ -4,14 +4,16 @@ title: Controlling the Turtlesim
 
 # Controlling the Turtlesim
 
-To control/move the Turtlesim we make use of the rostopic `cmd_vel` (**command_velocity**). 
-This is standard rostopic that used in practically every robot that use ROS. 
+To control/move the turtle we make use of the rostopic `cmd_vel` (**command_velocity**). 
+This is standard rostopic that is used in practically every robot that uses ROS. 
 With this command we can command the linear and angular speed of the robot.
 
 
 #### Get info turtlesim
 
 As reminder we first check the info off the `turtlesim` node.
+
+Make sure you execute this in the container terminal.
 
 ```shell
 rosnode info /turtlesim 
@@ -91,7 +93,7 @@ geometry_msgs/Vector3 angular
 ```
 
 
-The requirement is for two vectors with 3 elements each. The message type is `geometry_msgs/Twist` . 
+The requirement is for two vectors with 3 elements each. The message type is `geometry_msgs/Twist`. 
 
 To get a list of messages for ROS of geometry_msgs 
 
@@ -120,11 +122,13 @@ Subscribed topics:
 ## Move the turtle
 
 The following command will send a single message to turtlesim telling it to move with a linear velocity of 2.0, 
-and an angular velocity of 1.8. It will move from its starting position along a circular trajectory for a distance and then stop. 
+and an angular velocity of 1.8. 
+It will move from its starting position along a circular trajectory for a distance and then stop. 
+
 
 ```shell 
 rostopic pub -1 /turtle1/cmd_vel geometry_msgs/Twist -- '[2.0, 0.0, 0.0]' '[0.0, 0.0, 1.8]' 
-``` 
+```
 
 * `-1`, `--once`:	publish one message and exit 
 * `-r` RATE, --rate=RATE publishing rate (hz). For -f and stdin input, this **defaults to 10**.  
@@ -151,9 +155,9 @@ angular:
     z: 0.0" 
 ```
 
-Now back space to fill in the values x=0.0 (lineair) and z= 1.8 (angular) (Not yet executed) 
+Now `backspace` to fill in the values x=0.0 (linear) and z= 1.8 (angular) (Not yet executed) 
 
-If ENTER the rostopic will be publish **once** due to `-1`
+If ENTER the `rostopic` will be publish **once** due to `-1`
 
 ::: warning
 Depending on the programming style of the used robot it can be a very dangerous control with one msg. 
@@ -231,7 +235,9 @@ rosservice call /reset
 
 You will see the turtle is running in a circle.
 
-![](./assets/turtlesim_circle.gif)
+<p align="center">
+<img src="./assets/turtlesim_circle.gif" alt="drawing" width="300" height="200" />
+</p>
 
 
 To Show the rate in Hz of the published topic `/turtle1/pose` (`CTRL-C` to stop data stream): 
@@ -296,7 +302,7 @@ rosrun turtlesim turtlesim_node
 In a third window, we execute a node that allows keyboard control of the turtle. 
 `roscore` is running in one window and `turtlesim_node` in another. 
 
-If needed open a new connection with container
+If needed open a new connection with container.
 
 ```shell
 docker exec -it turtlesim_cont bash
@@ -315,15 +321,15 @@ Use arrow keys to move the turtle. 'q' to quit.
 ```
 
 ::: warning
-To move turtle with arrow keys, be sure the 
-focus is on the window that started `turtle_teleop_key`. Otherwise the turtle won't move.
+To move turtle with arrow keys, be sure the focus is on the window that started `turtle_teleop_key`. 
+Otherwise the turtle won't move.
 :::
 
 ::: tip
 With `space` you can stop the turtle.
 :::
 
-With the argument `list` we can check which rosnodes are running
+With the argument `list` we can check which rosnodes are running.
 
 ```shell
 rosnode list 
@@ -342,10 +348,10 @@ Output:
 ```
 
 We can see that the active rosnode for the teleop controlling is named `/turtleop_turtle` and not the 
-`turtle_teleop_key` name used in rosrun command
+`turtle_teleop_key` name used in rosrun command.
 
 
-To get the info of the /teleop_turtle node 
+To get the info of the /teleop_turtle node:
 
 
 ```bash

@@ -6,7 +6,8 @@ title: Exercises
 
 Below you can find some recap exercises.
 
-But first try to add a new turtle. You don't have to stop the rosnode turtlesim
+But first try to add a new turtle. You don't have to stop the rosnode turtlesim.
+
 An additional turtle can be spawn with a service parameter `/spawn`
 
 The info of the ros parameter can be looked up with:
@@ -34,7 +35,7 @@ rosservice call /spawn 3 3 0 turtle2
 ![](./assets/img_spawn_second_turtle.png)
 
 
-To delete a turtle the command below can be used
+To delete a turtle the command below can be used:
 
 ```shell
 rosservice call /kill "name: 'turtle2'"
@@ -46,7 +47,7 @@ It isn't possible to move the second turtle with the turtle_teleop_key.
 
 
 ## Exercise 1 
-Try to move the second turtle to position `-2 -2  1` (x y theta) by terminal
+Try to move the second turtle to position `-2 -2  1` (`x y theta`) by terminal
 
 ::: details Solution Exercise 1
 ```shell

@@ -4,22 +4,23 @@ title: Installation
 # Installation
 
 ## Introduction 
-To make the installation of ROS and the Turtlesim example easy we will be using [Docker](https://www.docker.com/) to setup everything up.
+To make the installation of ROS and the Turtlesim example easy we will be using [Docker](https://www.docker.com/) to set everything up.
 
-One of the advantages is that the application can be run on Linux and Windows([WSL](https://docs.microsoft.com/en-us/windows/wsl/install)). 
-Furthermore all needed packages are installed automatically with use of a Dockerfile.
+One of the advantages is that the application can be run on Linux or Windows([WSL](https://docs.microsoft.com/en-us/windows/wsl/install)). 
 
-![](./assets/DockerLogo.png)
+Furthermore, all needed packages are installed automatically with the use of the Dockerfile.
 
-
+<p align="center">
+<img src="./assets/DockerLogo.png" alt="drawing" width="150" height="100" />
+</p>
 
 To get everything running. The following steps have to be done:
 
-1. [Install Docker](#install-docker)  
-   1. Install Docker on Ubuntu
+1. [Install Docker](#install-docker)
+   1. [Install Docker on Ubuntu](#installation-on-ubuntu)
    2. [Install Docker on Windows](#installation-wsl-on-windows-pc)
-2. Build the Dockerfile
-3. Run the Docker container
+2. [Build the Dockerfile](#building-the-dockerfile)
+3. [Run the Docker container](#run-the-docker-container)
 
 ### Requirements
 * PC with Windows OS (admin rights needed)
@@ -28,7 +29,7 @@ To get everything running. The following steps have to be done:
 ## Install Docker
 
 ### Installation on Ubuntu
-To install Docker on ubuntu following [link](https://docs.docker.com/engine/install/ubuntu/)
+To install Docker on ubuntu following [link](https://docs.docker.com/engine/install/ubuntu/).
 
 ### Installation on Windows
 
@@ -43,9 +44,9 @@ in the Windows Command Prompt or Powershell.
 ```shell
 wsl --install
 ```
-source: https://docs.microsoft.com/en-us/windows/wsl/install
+source: [Microsoft WSL](https://docs.microsoft.com/en-us/windows/wsl/install)
  
-Get/check version of WSL
+**Get/check version of WSL**
 
 To check the WSL mode, run:
 
@@ -85,9 +86,10 @@ section before installing the Docker Desktop Stable release.
 If you have installed Docker Desktop on a system that supports WSL 2, this option will be enabled by default.
 
 ![](./assets/wsl2-enable.png)
-5. Click Apply & Restart.
 
+5. Click Apply & Restart.
 6. Ensure the distribution runs in WSL 2 mode. WSL can run distributions in both v1 or v2 mode.
+
 To check the WSL mode, run:
 
 ```shell
@@ -108,36 +110,36 @@ wsl.exe --set-default-version 2
 When Docker Desktop restarts, go to **Settings > Resources > WSL Integration**.
 
 The Docker-WSL integration will be enabled on your default WSL distribution. 
-To change your default WSL distro, run 
+To change your default WSL distro, run:
 
 ```shell
 wsl --set-default <distro name>.
 ```
 
-For example, to set Ubuntu as your default WSL distro, run 
+For example, to set Ubuntu as your default WSL distro, run:
 
 ```shell
 wsl --set-default ubuntu.
 ```
 Optionally, select any additional distributions you would like to enable the Docker-WSL integration on.
 
-source: https://docs.docker.com/desktop/windows/wsl/ 
+source: [Docker & WSL](https://docs.docker.com/desktop/windows/wsl/) 
 
-## The DockerFile
+## Building the Dockerfile
 To run ROS and the turtlesim package on Ubuntu or WSL we will use Docker. 
 To running everything a [Dockerfile](https://docs.docker.com/engine/reference/builder/) has to been prepared.
 
 For this tutorial a Dockerfile is already made for:
 
 * ROS Melodic 
-* ROS Foxy (TODO)
+* _ROS Foxy (TODO)_
 
 To get everything running the Dockerfile has to be build on your computer. 
 When building the Dockerfile, Docker downloads every necessary resource on your PC. 
 At the end a Docker Image (template) is the result. That image can be used later on to run or start a Docker container.
 
 ::: tip
-Take a look at the [Docker Hub](https://hub.docker.com/) Hub for more interesting Docker images
+Take a look at the [Docker Hub](https://hub.docker.com/) Hub for more interesting Docker images.
 :::
 
 Make a directory on your pc and go in the directory
@@ -156,7 +158,7 @@ nano Dockerfile
 The docker file name is case sensitive. If it isn't written correctly like `Dockerfile` i won' work!
 ::: 
 
-Below you can find the complete Dockerfile in the dropdown menu. You have to paste this in the Dockerfile.
+Below you can find the complete Dockerfile (_in the dropdown menu_). You have to paste this in the Dockerfile.
 ::: tip
 You can alter it be own flavor if needed.
 :::
@@ -236,8 +238,6 @@ RUN echo "source root/home/catkin_ws/devel/setup.bash" >> /root/.bashrc
 </details>
 
 
-## Building the Dockerfile
-
 To build the Dockerfile use the command below in your terminal.
 
 ```shell
@@ -248,7 +248,8 @@ Done forget the `.` in the command above. Otherwise you will get an error.
 :::
 If it is the first time it can take a while.
 
-If all goes well a docker image has been generate. Normally you can see the Docker image name (`ros-turtle:latest`)it in the last line of the terminal output.
+If all goes well a docker image has been generate. 
+Normally you can see the Docker image name (`ros-turtle:latest`) it in the last line of the terminal output.
 
 ```shell
 #### Running command: "make -j16 -l16" in "/root/home/catkin_ws/build"
@@ -263,12 +264,11 @@ Successfully built 849222a0c02a
 Successfully tagged ros-turtle:latest
 ```
 ::: warning
-Make sure it has the name `ros-turtle` in it. Because in the next step (Running the image) we use that specific name.
+Make sure it has the name `ros-turtle` in it. 
+Because in the next step (Running the image) we use that specific name.
 :::
 
-
-
-## Run Docker container
+## Run the Docker container
 
 To run the Docker image `ros-turtle` to a Docker container use the bash script below.
 
@@ -335,3 +335,4 @@ If you want to exit the container. Just type `exit` in the terminal
 ```shell
 exit
 ```
+

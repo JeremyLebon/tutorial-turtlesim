@@ -25,6 +25,8 @@ Each time illustrated with an example on the turtlesim:
 
 The following compenents will be handled:
 
+<p align="center">
+
 ```mermaid
 graph TD
     roscore
@@ -33,6 +35,8 @@ graph TD
     rosservice
     rosparam
 ```
+
+</p>
 
 * roscore
 * rosnode
@@ -50,7 +54,7 @@ The ROS master coordinates the communication between the different ROS nodes (pr
 Each ROS node registers with the ROS master at start-up. The ROS master can/should be started via the command.
 
 `roscore`is a collection of nodes and programs that are pre-requisites of a ROS-based system. 
-You must have a roscore running in order for ROS nodes to communicate. It is launched using the roscore command.
+You must have a roscore running in order for ROS nodes to communicate. It is launched using the `roscore` command.
 
 `roscore` will start up: 
 
@@ -58,13 +62,9 @@ You must have a roscore running in order for ROS nodes to communicate. It is lau
 * ROS Parameter Server 
 * rosout logging node 
 
-
-
 ::: warning
 There can only be **one** ROS master. When starting up a 2nd ROS master, the first ROS master is turned off.
 :::
-
-
 
 Add the `roscore` in the container terminal
 
@@ -119,6 +119,7 @@ source: [wiki ros](http://wiki.ros.org/roscore)
 
 
 ## rosnode
+<p align="center">
 
 ```mermaid
 flowchart TD
@@ -128,13 +129,15 @@ flowchart TD
     roscore <--> rosnode_4;
 ```
 
+</p>
+
 A ROS node is an executable program (executable file) contained in a ROS package. 
 The ROS nodes use the ROS client library which allows to communicate with other nodes. 
 Nodes can publish or subscribe to one or more topics. 
 Nodes can also offer or use a service. There are 2 types of client libraries:
 * rospy: python client library
 * roscpp: c++ client library 
-* Others (java, lsp,...)
+* or others (java, lsp,...)
 
 
 We will start the turtlesim node and explore its properties. 
@@ -156,7 +159,7 @@ Connect with the Docker container with a new **container** terminal.
 docker exec -it turtlesim_cont bash
 ```
 
-Start the turtlesim node with `rosrun`
+Start the turtlesim node with `rosrun`:
 
 ```shell
 rosrun turtlesim turtlesim_node 
@@ -173,13 +176,14 @@ libGL error: failed to load driver: swrast
 ```
 
 The rosrun command takes the arguments `[package name]` `[node name]`. 
+
 The node creates the screen image and the turtle.
 
 <p align="center">
 <img src="./assets/img_screen_turtlesim.png" alt="drawing" width="400" height="250" />
 </p>
 
-Here the turtle is in the center in x=5.5, y=5.5 with no rotation. 
+Here the turtle is in the center in `x = 5.5`, `y = 5.5 `with no rotation. 
 
 
 Before moving the turtle, let's study the properties of the node available with turtlesim 
@@ -193,13 +197,13 @@ Execute this command again in a new terminal connected to the container.
 ```shell
 docker exec -it turtlesim_cont bash
 ```
-Add the command below in the new terminal
+Add the command below in the new terminal:
 
 ```shell
 rosnode list
 ```
 
-Output: 
+Output
 
 ```shell
 /rosout 
@@ -232,7 +236,8 @@ Reuse the terminal of the previous step.
 ```bash
 rosnode info /turtlesim 
 ```
-Output:
+
+Output
 
 ```shell
 --------------------------------------------------------------------------------
@@ -274,6 +279,7 @@ Clients can request a request from the service and have to wait for a response.
 The principle of communication can be compared to a telephone conversation between 2 ROS nodes. 
 However, this is intended for short-term communication between 2 nodes.
 
+<p align="center">
 
 ```mermaid
 sequenceDiagram
@@ -285,6 +291,7 @@ sequenceDiagram
     rosnode2-->>rosnode1: response
 ```
 
+</p>
 
 
 #### Get ROS services 
@@ -320,7 +327,7 @@ The format of a rosservice call `rosservice <service>` `<arguments>` is the foll
 
 The turtle can be moved using the `rosservice` teleport option. The format of the position is `[x y theta]`. 
 
-To get the info of a specific `rosservice` use the command below
+To get the info of a specific `rosservice` use the command below:
 
  ```shell
 rosservice info /spawn
@@ -336,28 +343,33 @@ Args: x y theta name
 
 #### Example rosservices turtlesim
 
-**teleport_absolute**
+**Teleport_absolute**
 
 The absolute teleport option moves the turtle to the absolute position in de screen. 
-The arguments are `[x y theta] `
+The arguments are `[x y theta] `.
 
  ```bash
 rosservice call /turtle1/teleport_absolute 1 1 0 
  ```
 
- ![](./assets/img_teleport_absolute.png)
+<p align="center">
+<img src="./assets/img_teleport_absolute.png" alt="drawing" width="400" height="300" />
+</p>
 
 
 **teleport_relative** 
 
 The relative teleport option moves the turtle with respect to its present position. 
-The arguments are `[linear angle] `
+The arguments are `[linear angle] `.
 
  ```bash
 rosservice call /turtle1/teleport_relative  1 0 
  ```
 
-![](./assets/img_teleport_relative.png)
+<p align="center">
+<img src="./assets/img_teleport_relative.png" alt="drawing" width="400" height="300" />
+</p>
+
 
 **Exercise 1**
 
@@ -379,7 +391,7 @@ Look for `set_pen`
 
 ::: details Solution Exercise 2
 
-Get the info of the service
+Get the info of the service:
 
 ```shell
 rosservice info /turtle1/set_pen
@@ -412,7 +424,7 @@ The node `/turtlesim` publishes three topics and subscribes to the `/turtle1/cmd
 
 **Turtlesim pose** 
 
-A interesting topic of turtlesim node is the turtles pose (position). This is the x, y position, angular direction, 
+A interesting topic of `turtlesim` node is the turtles pose (position). This is the x, y position, angular direction, 
 and the linear and angular velocity of the turtle. 
 
 The following command gives insight in following items:
@@ -420,7 +432,7 @@ The following command gives insight in following items:
 * How is publishing the topic
 * How is subscribed to the topic 
 
-We start with the turtlesim pose topic
+We start with the turtlesim pose topic:
 
  ```shell
 rostopic info /turtle1/pose 
@@ -467,7 +479,7 @@ float32 linear_velocity
 float32 angular_velocity
  ```
 
-To read the actual values of the ROS topic use the `rostopic echo` command
+To read the actual values of the ROS topic use the `rostopic echo` command:
 
 ```shell
 rostopic echo /turtle1/pose 
@@ -500,7 +512,9 @@ Extra info: [http://wiki.ros.org/ROS/Tutorials/UnderstandingTopics](http://wiki.
 ## rosparam
 
 ROS parameters allows data to be stored via key/name in a central location. 
-This means that these parameters are globally visible. ROS parameters are intended to store configuration data:
+This means that these parameters are globally visible. 
+
+ROS parameters are intended to store configuration data:
 * Update hardware drivers
 * Algorithms Adjustment
 
@@ -528,7 +542,7 @@ Output
 
 ```
 #### Read a parameter value
-We want to get parameters and change color of background to Red 
+We want to get parameters and change color of background to red.
 
 ```shell
 rosparam get /turtlesim/background_r
@@ -537,7 +551,7 @@ rosparam get /turtlesim/background_r
 The response will be the red value of the background.
 
 :::tip
-use Tab to get the available rosparams
+use `Tab` to get the available rosparams
 :::
 
 To change a rosparam use the argument `set`
