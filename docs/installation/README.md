@@ -40,7 +40,7 @@ and [Docker Desktop](https://www.docker.com/products/docker-desktop). In the fol
 You can now install everything you need to run  ([WSL](https://docs.microsoft.com/en-us/windows/wsl/install)) by entering this command in as **administrator** 
 in the Windows Command Prompt or Powershell.
 
-```bash
+```shell
 wsl --install
 ```
 source: https://docs.microsoft.com/en-us/windows/wsl/install
@@ -48,18 +48,24 @@ source: https://docs.microsoft.com/en-us/windows/wsl/install
 Get/check version of WSL
 
 To check the WSL mode, run:
-```bash
+
+```shell
 wsl.exe -l -v
 ```
+
 ::: tip
 To upgrade your existing Linux distro to v2, run:
-```bash
+
+```shell
 wsl.exe --set-version (distro name) 2
 ```
+
 To set v2 as the default version for future installations, run:
-`````bash
+
+`````shell
 wsl.exe --set-default-version 2
 `````
+
 :::
 #### Installation of Docker Desktop
 
@@ -83,26 +89,34 @@ If you have installed Docker Desktop on a system that supports WSL 2, this optio
 
 6. Ensure the distribution runs in WSL 2 mode. WSL can run distributions in both v1 or v2 mode.
 To check the WSL mode, run:
-```bash
+
+```shell
 wsl.exe -l -v
 ```
 To upgrade your existing Linux distro to v2, run:
-```bash
+
+```shell
 wsl.exe --set-version (distro name) 2
 ```
+
 To set v2 as the default version for future installations, run:
-```bash
+
+```shell
 wsl.exe --set-default-version 2
 ```
+
 When Docker Desktop restarts, go to **Settings > Resources > WSL Integration**.
 
 The Docker-WSL integration will be enabled on your default WSL distribution. 
 To change your default WSL distro, run 
-```bash
+
+```shell
 wsl --set-default <distro name>.
 ```
+
 For example, to set Ubuntu as your default WSL distro, run 
-```bash
+
+```shell
 wsl --set-default ubuntu.
 ```
 Optionally, select any additional distributions you would like to enable the Docker-WSL integration on.
@@ -132,7 +146,9 @@ Make a directory on your pc and go in the directory
 mkdir turtlesim_docker
 cd turtlesim_docker
 ```
+
 Create the Dockerfile in the directory
+
 ```shell
 nano Dockerfile
 ```
@@ -220,13 +236,10 @@ RUN echo "source root/home/catkin_ws/devel/setup.bash" >> /root/.bashrc
 </details>
 
 
-
-
-
-
 ## Building the Dockerfile
 
 To build the Dockerfile use the command below in your terminal.
+
 ```shell
 docker build -t ros-turtle  .
 ```
@@ -260,6 +273,7 @@ Make sure it has the name `ros-turtle` in it. Because in the next step (Running 
 To run the Docker image `ros-turtle` to a Docker container use the bash script below.
 
 Make a bash script by in the same directory (`turtlesim_docker`):
+
 ```shell
 nano run_image_ros.bash
 ```
@@ -293,6 +307,7 @@ docker run -it \
 ```
 
 To run the Docker container, execute the bash script by the use of the terminal.
+
 ```shell
 ./run_image_ros.bash
 ```
