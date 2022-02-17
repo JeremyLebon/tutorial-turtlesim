@@ -238,6 +238,9 @@ RUN echo "source root/home/catkin_ws/devel/setup.bash" >> /root/.bashrc
 </details>
 
 
+Get file from [Github](https://github.com/JeremyLebon/tutorial-turtlesim-code/blob/master/Dockerfile)
+
+
 To build the Dockerfile use the command below in your terminal.
 
 ```shell
@@ -305,6 +308,8 @@ docker run -it \
     ros-turtle \
     bash
 ```
+
+Get file from [Github](https://github.com/JeremyLebon/tutorial-turtlesim-code/blob/master/run_image_ros.bashe)
 
 To run the Docker container, execute the bash script by the use of the terminal.
 

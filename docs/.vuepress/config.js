@@ -6,7 +6,8 @@ module.exports = {
 
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'rosdriven', link: 'https://www.rosdriven.dev' },
+      { text: 'ROSdriven', link: 'https://www.rosdriven.dev' },
+        { text: 'Code', link: 'https://github.com/JeremyLebon/tutorial-turtlesim-code' }
     ],
     sidebar: [
       ['/', 'Home'],

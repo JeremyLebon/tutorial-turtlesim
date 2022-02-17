@@ -122,6 +122,7 @@ if __name__== "__main__":
 
 ```
 
+Get file from [Github](https://github.com/JeremyLebon/tutorial-turtlesim-code/blob/master/scripts/turtlesubscribe.py)
 
 ## Move the turtle linear
 
@@ -229,6 +230,7 @@ if __name__== "__main__":
     	rospy.loginfo("End of the trip for Turtlesim") 
 
 ```
+Get file from [Github](https://github.com/JeremyLebon/tutorial-turtlesim-code/blob/master/scripts/turtlemove.py)
 
 ```bash
 python turtlemove.py 
@@ -439,6 +441,8 @@ if __name__ == '__main__':
 ```
 :::
 
+Get file from [Github](https://github.com/JeremyLebon/tutorial-turtlesim-code/blob/master/scripts/turtlemovegoal.py)
+
 Source wiki ([Moving to goal](http://wiki.ros.org/turtlesim/Tutorials/Go%20to%20Goal))
 
 ## Multiple goals
@@ -599,9 +603,14 @@ if __name__ == '__main__':
 ```
 :::
 
+Get file from [Github](https://github.com/JeremyLebon/tutorial-turtlesim-code/blob/master/scripts/turtlepath.py)
+
 Interested in other examples python & turtlesim see the following link.
 
 * [Move in straight line](http://wiki.ros.org/turtlesim/Tutorials/Moving%20in%20a%20Straight%20Line)
 * [Rotating Left & Right](http://wiki.ros.org/turtlesim/Tutorials/Rotating%20Left%20and%20Right)
 
  
+Hopefully you learnt something from this tutorial. :)
+
+More info visit [www.rosdriven.dev](www.rosdriven.dev)
